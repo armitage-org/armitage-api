@@ -4,6 +4,7 @@ import request from 'supertest'
 import runSeed from '../utils/seed'
 
 let user: any
+let book: any
 let accessToken: string
 let authHeader: object
 let seed: any
@@ -13,8 +14,7 @@ describe("'books' service", () => {
     await cleaner.clean(app.get('knexClient'), {
       ignoreTables: ['knex_migrations', 'knex_migrations_lock'],
     })
-    seed = await runSeed(app)
-    user = seed.user
+    ;({ user, book } = await runSeed(app))
     accessToken = await app
       .service('authentication')
       .createAccessToken({}, { subject: user.id.toString() })
@@ -29,6 +29,11 @@ describe("'books' service", () => {
     it('can read book list', async () => {
       await request(app).get('/books').expect(200)
     })
+    it('can read book detail', async () => {
+      await request(app)
+        .get(`/books/${book.id as string}`)
+        .expect(200)
+    })
     it('cannot create a book', async () => {
       await request(app)
         .post('/books')
@@ -42,7 +47,12 @@ describe("'books' service", () => {
     it('can read book list', async () => {
       await request(app).get('/books').set(authHeader).expect(200)
     })
-    it('can create a book', async () => {
+    it('can read book detail', async () => {
+      await request(app)
+        .get(`/books/${book.id as string}`)
+        .set(authHeader)
+        .expect(200)
+    })
       await request(app)
         .post('/books')
         .set(authHeader)
