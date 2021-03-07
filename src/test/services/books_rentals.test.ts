@@ -55,7 +55,6 @@ describe("'books_rentals' service", () => {
         .expect(201)
     })
     it('cannot create 2nd rental for the same book', async () => {
-      expect.assertions(1)
       await request(app)
         .post('/rentals')
         .set(authHeader)
@@ -64,7 +63,7 @@ describe("'books_rentals' service", () => {
           book_id: book.id,
         })
         .expect(201)
-      await request(app)
+      const { body } = await request(app)
         .post('/rentals')
         .set(authHeader)
         .send({
@@ -72,9 +71,7 @@ describe("'books_rentals' service", () => {
           book_id: book.id,
         })
         .expect(409)
-        .then(({ body }) => {
-          expect(body.message).toMatchInlineSnapshot('"Book already rented"')
-        })
+      expect(body.message).toMatchInlineSnapshot('"Book already rented"')
     })
     it('can return a book', async () => {
       const { body: rental } = await request(app)
@@ -113,7 +110,6 @@ describe("'books_rentals' service", () => {
         .expect(201)
     })
     it('cannot create rental for already rented book', async () => {
-      expect.assertions(1)
       await request(app)
         .post('/rentals')
         .set(authHeader)
@@ -122,7 +118,7 @@ describe("'books_rentals' service", () => {
           book_id: book.id,
         })
         .expect(201)
-      await request(app)
+      const { body } = await request(app)
         .post('/rentals')
         .set(authHeader2)
         .send({
@@ -130,9 +126,7 @@ describe("'books_rentals' service", () => {
           book_id: book.id,
         })
         .expect(409)
-        .then(({ body }) =>
-          expect(body.message).toMatchInlineSnapshot('"Book already rented"')
-        )
+      expect(body.message).toMatchInlineSnapshot('"Book already rented"')
     })
     it('cannot create rental for another user', async () => {
       await request(app)
