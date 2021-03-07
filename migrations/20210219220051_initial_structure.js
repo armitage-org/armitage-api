@@ -1,0 +1,52 @@
+exports.up = knex =>
+  knex.schema
+    .createTable('books', t => {
+      t.increments('id')
+      t.string('title')
+      t.string('info')
+      t.string('image')
+      t.string('author')
+      t.timestamps(true, true)
+    })
+    .createTable('users', t => {
+      t.increments('id')
+      t.string('name')
+      t.string('email')
+      t.string('image')
+      t.timestamps(true, true)
+    })
+    .createTable('books_rentals', t => {
+      t.increments('id')
+      t.integer('user_id')
+        .unsigned()
+        .references('users.id')
+        .onDelete('SET NULL')
+        .onUpdate('SET NULL')
+      t.integer('book_id')
+        .unsigned()
+        .references('books.id')
+        .onDelete('SET NULL')
+        .onUpdate('SET NULL')
+      t.timestamp('rentedAt').defaultTo(knex.fn.now())
+      t.timestamp('returnedAt')
+      t.timestamp('shouldReturnAt')
+    })
+    .createTable('rental_queue', t => {
+      t.increments('id')
+      t.integer('user_id')
+        .unsigned()
+        .references('users.id')
+        .onDelete('SET NULL')
+        .onUpdate('SET NULL')
+      t.integer('book_id')
+        .unsigned()
+        .references('books.id')
+        .onDelete('SET NULL')
+        .onUpdate('SET NULL')
+      t.timestamps(true, true)
+    })
+
+exports.down = knex =>
+  ['books', 'users', 'books_rentals', 'rental_queue']
+    .reverse()
+    .reduce((acc, tableName) => acc.dropTableIfExists(tableName), knex.schema)

@@ -1,0 +1,25 @@
+{
+  "host": "localhost",
+  "paginate": false,
+  "authentication": {
+    "oauth": {
+      "google": {
+        "key": "GOOGLE_OAUTH_KEY",
+        "secret": "GOOGLE_OAUTH_SECRET",
+        "scope": ["openid", "email"],
+        "nonce": true
+      }
+    },
+    "secret": "AUTH_SECRET",
+    "entity": "user",
+    "service": "users",
+    "authStrategies": ["jwt", "google"],
+    "jwtOptions": {
+      "header": { "typ": "access" },
+      "audience": "https://yourdomain.com",
+      "issuer": "feathers",
+      "algorithm": "HS256",
+      "expiresIn": "10d"
+    }
+  }
+}
