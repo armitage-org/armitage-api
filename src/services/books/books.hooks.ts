@@ -19,6 +19,11 @@ const bookResolvers: ResolverMap<any> = {
         .sort(function compare(a: any, b: any) {
           return new Date(a.rentedAt).getTime() - new Date(b.rentedAt).getTime()
         })[0]
+      if (book.mostRecentRent) {
+        book.mostRecentRent.user = await context.app
+          .service('users')
+          .get(book.mostRecentRent.user_id)
+      }
       book.available = book.rentals.length === 0
     },
   },
