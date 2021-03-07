@@ -153,4 +153,22 @@ describe("'books_rentals' service", () => {
         .expect(403)
     })
   })
+  describe('Data', () => {
+    it('rented book contains info about rentee', async () => {
+      await request(app)
+        .post('/rentals')
+        .set(authHeader)
+        .send({
+          user_id: user.id,
+          book_id: book.id,
+        })
+        .expect(201)
+      const { body } = await request(app)
+        .get(`/books/${book.id as string}`)
+        .expect(200)
+      expect(body.mostRecentRent).toBeDefined()
+      expect(body.mostRecentRent.user).toBeDefined()
+      expect(body.mostRecentRent.user.name).toEqual('John Doe')
+    })
+  })
 })
