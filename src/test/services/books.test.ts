@@ -53,6 +53,7 @@ describe("'books' service", () => {
         .set(authHeader)
         .expect(200)
     })
+    it('can create a book', async () => {
       await request(app)
         .post('/books')
         .set(authHeader)
