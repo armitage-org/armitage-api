@@ -10,10 +10,17 @@ on:
     branches: [ develop ]
 
 jobs:
-  build:
+  dx-scanner:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
     - name: DX Scanner Action
       uses: DXHeroes/dx-scanner@master
+  snyk:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Run Snyk to check for vulnerabilities
+      uses: snyk/actions/node@master
+      env:
+        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
