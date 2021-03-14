@@ -39,7 +39,7 @@ const configSchema = {
           connectTimeout: 10000,
           timeout: 10000,
         },
-        debug: true,
+        debug: loader.bool('KNEX_DEBUG_ENABLED'),
         pool: { min: 2, max: 10 },
       },
     },
