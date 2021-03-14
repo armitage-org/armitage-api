@@ -1,13 +1,14 @@
 import * as feathersAuthentication from '@feathersjs/authentication'
-import { HookContext } from '../../app'
 import config from '../../config'
+import { HookContext } from '@feathersjs/feathers'
+import { HooksObject } from '@feathersjs/feathers'
 // Don't remove this comment. It's needed to format import lines nicely.
 
 const { authenticate } = feathersAuthentication.hooks
 
 const adminMails = config.businessLogic.adminEmails
 
-export default {
+const hooks: Partial<HooksObject> = {
   before: {
     all: [],
     find: [authenticate('jwt')],
@@ -47,3 +48,5 @@ export default {
     remove: [],
   },
 }
+
+export default hooks
