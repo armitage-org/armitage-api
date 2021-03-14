@@ -75,3 +75,4 @@ jobs:
         SQL_USER: postgres
         SQL_PASSWORD: postgres
         SQL_DB: postgres
+        ADMIN_EMAILS: admin@user.com
