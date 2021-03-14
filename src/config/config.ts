@@ -15,6 +15,11 @@ const configSchema = {
   server: {
     port: loader.number('SERVER_PORT'),
   },
+  businessLogic: {
+    adminEmails: loader.custom((emails: string) => emails.split(','))(
+      'ADMIN_EMAILS'
+    ),
+  },
   bookshelf: {
     options: {
       runMigrationsOnStartup: false,
