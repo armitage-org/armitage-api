@@ -18,7 +18,7 @@
     "start:live": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/index.ts",
     "docs": "exit 0",
     "start-lr": "tsc-watch --onSuccess \"npm run start\"",
-    "test": "jest --colors --detectOpenHandles --forceExit --runInBand",
+    "test": "NODE_ENV=test jest --colors --detectOpenHandles --forceExit --runInBand",
     "test-lr": "npm run test -- --watch",
     "cover": "npm run test -- --collectCoverage",
     "ci-test": "npm run cover -- --reporters=default --reporters=jest-junit --ci",
