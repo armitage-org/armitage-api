@@ -15,6 +15,11 @@ const configSchema = {
   server: {
     port: loader.number('SERVER_PORT'),
   },
+  businessLogic: {
+    adminEmails: loader.custom((emails: string) => emails.split(','))(
+      'ADMIN_EMAILS'
+    ),
+  },
   bookshelf: {
     options: {
       runMigrationsOnStartup: false,
@@ -34,7 +39,7 @@ const configSchema = {
           connectTimeout: 10000,
           timeout: 10000,
         },
-        debug: true,
+        debug: loader.bool('KNEX_DEBUG_ENABLED'),
         pool: { min: 2, max: 10 },
       },
     },

@@ -4,22 +4,29 @@ import request from 'supertest'
 import runSeed from '../utils/seed'
 
 let user: any
+let userAdmin: any
 let book: any
 let accessToken: string
+let accessTokenAdmin: string
 let authHeader: object
-let seed: any
+let authHeaderAdmin: object
 
 describe("'books' service", () => {
   beforeEach(async () => {
     await cleaner.clean(app.get('knexClient'), {
       ignoreTables: ['knex_migrations', 'knex_migrations_lock'],
     })
-    ;({ user, book } = await runSeed(app))
+    ;({ user, userAdmin, book } = await runSeed(app))
     accessToken = await app
       .service('authentication')
       .createAccessToken({}, { subject: user.id.toString() })
+    accessTokenAdmin = await app
+      .service('authentication')
+      .createAccessToken({}, { subject: userAdmin.id.toString() })
     await app.service('authentication').verifyAccessToken(accessToken)
+    await app.service('authentication').verifyAccessToken(accessTokenAdmin)
     authHeader = { Authorization: `Bearer ${accessToken}` }
+    authHeaderAdmin = { Authorization: `Bearer ${accessTokenAdmin}` }
   })
   it('registered the service', () => {
     const service = app.service('books')
@@ -53,10 +60,21 @@ describe("'books' service", () => {
         .set(authHeader)
         .expect(200)
     })
-    it('can create a book', async () => {
+    it('cannot create a book', async () => {
       await request(app)
         .post('/books')
         .set(authHeader)
+        .send({
+          title: 'Why we sleep?',
+        })
+        .expect(403)
+    })
+  })
+  describe('Admin', () => {
+    it('can create a book', async () => {
+      await request(app)
+        .post('/books')
+        .set(authHeaderAdmin)
         .send({
           title: 'Why we sleep?',
         })
