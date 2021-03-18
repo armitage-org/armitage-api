@@ -42,7 +42,7 @@
     "usePathForSuiteName": "true"
   },
   "dependencies": {
-    "@ackee/styleguide-backend-config": "^0.1.2",
+    "@ackee/styleguide-backend-config": "^0.1.8",
     "@feathersjs/authentication": "^4.5.11",
     "@feathersjs/authentication-oauth": "^4.5.11",
     "@feathersjs/configuration": "^4.5.11",
@@ -58,7 +58,7 @@
     "feathers-knex": "^7.1.1",
     "feathers-memory": "^4.1.0",
     "knex": "^0.21.17",
-    "lodash": "^4.17.20",
+    "lodash": "^4.17.21",
     "mysql": "^2.18.1",
     "node-healthz": "^1.0.1",
     "npm-run-series": "^1.0.1",
